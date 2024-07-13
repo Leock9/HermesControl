@@ -18,7 +18,7 @@ jobs:
         dotnet-version: '8.0'
 
     - name: Restore dependencies
-      run: dotnet restore SoulMenu.sln
+      run: dotnet restore HermesControl.sln
 
     - name: Build
       run: dotnet build HermesControl.sln --no-restore
