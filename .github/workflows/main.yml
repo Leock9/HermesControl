@@ -24,4 +24,4 @@ jobs:
       run: dotnet build HermesControl.sln --no-restore
 
     - name: Run tests
-      run: dotnet test HermesControl.Tests/HermesControl.Tests.csproj --no-build
+      run: dotnet test tests/HermesControl.Tests/HermesControl.Tests.csproj --no-build
