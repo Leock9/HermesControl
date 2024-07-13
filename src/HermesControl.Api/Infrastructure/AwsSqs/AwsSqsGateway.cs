@@ -22,12 +22,12 @@ public class AwsSqsGateway
     {
         try
         {
-            var queueUrl = _awsSqsConfiguration.QueueUrl ??
-                throw new ArgumentNullException(nameof(_awsSqsConfiguration.QueueUrl));
+            var queueUrl = _awsSqsConfiguration.Base ??
+                throw new ArgumentNullException(nameof(_awsSqsConfiguration.Base));
 
             var request = new SendMessageRequest
                 (
-                    queueUrl, JsonSerializer.Serialize(order)
+                    $"{queueUrl}{order.Status}", JsonSerializer.Serialize(order)
                 );
 
             _amazonSQS.SendMessageAsync(request);

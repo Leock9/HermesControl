@@ -2,13 +2,13 @@
 
 public interface IAwsSqsConfiguration
 {
-    string QueueUrl { get; }
+    string Base { get; }
     string Region { get; }
 }
 
 public record class AwsSqsConfiguration : IAwsSqsConfiguration
 {
-    public string QueueUrl { get; init; } = null!;
+    public string Base { get; init; } = null!;
 
     public string Region { get; init; } = null!;
 }
