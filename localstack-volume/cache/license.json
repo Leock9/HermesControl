@@ -1,0 +1,29 @@
+{
+  "id": "fefbbe83-e463-4189-96a8-e146fd6536bc",
+  "license_format": "1",
+  "signature": "7adb7c69e30c8a538cd9837a6c3f88b977b4a586816eb9604abeb724926eac93",
+  "license_type": "hobby",
+  "issue_date": "2024-07-13T04:53:48+00:00",
+  "expiry_date": "2025-07-05T00:50:25+00:00",
+  "products": [
+    {
+      "name": "localstack.stacks.preview",
+      "version": "*"
+    },
+    {
+      "name": "localstack-pro",
+      "version": "*.*.*"
+    },
+    {
+      "name": "localstack.pods.public",
+      "version": "*"
+    }
+  ],
+  "license_status": "ACTIVE",
+  "license_secret": "TFMxLjA6aNc5QzDpFOqbP2NPK8l0Kr9cZ3MficsPssJkhOBQUC+GYTovSRQ2bsPB9Nn43sCT",
+  "last_activated": "2024-07-13T04:53:48.845107Z",
+  "reactivate_after": "2024-07-14T04:53:48+00:00",
+  "offline_data": {
+    "localstack_version": "3.5.1.dev20240704032050"
+  }
+}

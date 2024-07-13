@@ -1,0 +1,59 @@
+volumes:
+  postgres_data:
+
+services:
+  hermescontrol.api:
+    image: ${DOCKER_REGISTRY-}hermescontrolapi
+    build:
+      context: .
+      dockerfile: src/HermesControl.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+    - pgdb
+    - pgadmin
+    - localstack
+
+  pgdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: dbHermesControl
+      POSTGRES_USER: pass
+      POSTGRES_PASSWORD: pass45455627
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pass -d dbHermesControl"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "leonardock9@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "pass"
+    ports:
+      - "5050:80"
+    depends_on:
+      - pgdb
+    volumes:
+    - "./servers.json:/pgadmin4/servers.json"
+
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_hermesControl}"
+    image: localstack/localstack-pro 
+    ports:
+      - "127.0.0.1:4566:4566" # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559" # external services port range
+    environment:
+      - LOCALSTACK_AUTH_TOKEN="ls-RiFIdoqO-PUpu-FOTO-NaXi-4708XuPA470c"
+      - AWS_DEFAULT_REGION=us-east-1
+      - SERVICES=sqs
+      - EXTRA_CORS_ALLOWED_ORIGINS=https://app.localstack.cloud. # Enable access from the dashboard
+    volumes:
+      - "./localstack-volume:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"

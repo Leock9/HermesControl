@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FDB5627E-7BC0-4DDA-952D-886215E95C37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{27C8586D-2676-44E6-ADBE-06C4AA1A9DDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HermesControl.Api", "src\HermesControl.Api\HermesControl.Api.csproj", "{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HermesControl.Tests", "tests\HermesControl.Tests\HermesControl.Tests.csproj", "{638E8686-A795-479A-8F20-2650371A30F3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{638E8686-A795-479A-8F20-2650371A30F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{638E8686-A795-479A-8F20-2650371A30F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{638E8686-A795-479A-8F20-2650371A30F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{638E8686-A795-479A-8F20-2650371A30F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10} = {FDB5627E-7BC0-4DDA-952D-886215E95C37}
+		{638E8686-A795-479A-8F20-2650371A30F3} = {27C8586D-2676-44E6-ADBE-06C4AA1A9DDD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A7E5C5E-123C-4102-97EE-F0C56DF83CBB}
+	EndGlobalSection
+EndGlobal
