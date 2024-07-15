@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+localstack-volume/cache/server.test.pem.key
+localstack-volume/cache/server.test.pem.crt
+localstack-volume/cache/server.test.pem
