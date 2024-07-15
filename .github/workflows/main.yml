@@ -25,3 +25,58 @@ jobs:
 
     - name: Run tests
       run: dotnet test tests/HermesControl.Tests/HermesControl.Tests.csproj --no-build
+
+  build-and-push-docker-image:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: needs.build-and-test.result == 'success'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build the Docker image
+        working-directory: src
+        run: |
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/hermescontrolapi:v1 .
+
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push the image to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/hermescontrolapi:v1
+
+  deploy-to-eks:
+    if: github.ref == 'refs/heads/main' && needs.build-and-push-docker-image.result == 'success'
+    runs-on: ubuntu-latest
+    needs: build-and-push-docker-image
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Update kubeconfig with EKS cluster credentials
+        run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region us-east-1
+
+      - name: Change permissions
+        run: chmod +x k8s/*.yaml
+
+      - name: Deploy to EKS
+        run: | 
+          kubectl apply -f k8s/hermescontrol-api-deployment.yml
+          kubectl apply -f k8s/hermescontrol-api-hpa.yml
+          kubectl apply -f k8s/hermescontrol-api-service.yml
+          kubectl apply -f k8s/hermescontrol-api-configmap.yml
