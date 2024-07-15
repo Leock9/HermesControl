@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hermescontrol-api-deployment
+  namespace: burguerspace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hermescontrol-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: "50%"
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: hermescontrol-api
+    spec:
+      containers:
+      - name: hermescontrol-api
+        image: lkhouri/hermescontrolapi:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20

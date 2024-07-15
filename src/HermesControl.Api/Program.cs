@@ -8,9 +8,11 @@ using HermesControl.Api.Domain.Gateways;
 using HermesControl.Api.Domain.UseCases;
 using HermesControl.Api.Infrastructure.AwsSqs;
 using HermesControl.Api.Infrastructure.AwsSqs.Configuration;
+using HermesControl.Api.Infrastructure.CerberusGateway;
 using HermesControl.Api.Infrastructure.OrderGateway.PostgreDb;
 using HermesControl.Api.Infrastructure.PaymentGateway;
 using HermesControl.Api.Infrastructure.PaymentGateway.Weebhook;
+using HermesControl.Api.Infrastructure.SoulMenuGateway;
 using LocalStack.Client.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -70,6 +72,8 @@ builder.Services.AddScoped<IPaymentGateway, PaymentGateway>();
 builder.Services.AddScoped<IOrderQueue, AwsSqsGateway>();
 builder.Services.AddScoped<IPaymentWebHook, PaymentWebHook>();
 builder.Services.AddScoped<IOrderGateway, OrderGateway>();
+builder.Services.AddScoped<ICerberusGateway, CerberusGateway>();
+builder.Services.AddScoped<ISoulMenuGateway, SoulMenuGateway>();
 
 // ** AWS **
 builder.Services.AddLocalStack(builder.Configuration);
@@ -77,6 +81,8 @@ builder.Services.AddAWSServiceLocalStack<IAmazonSQS>();
 
 // ** CONFIGURATIONS **
 builder.Services.AddSingleton<IAwsSqsConfiguration>(_ => builder.Configuration.GetSection("AwsSqsConfiguration").Get<AwsSqsConfiguration>());
+builder.Services.AddSingleton<ICerberusConfiguration>(_ => builder.Configuration.GetSection("CerberusConfiguration").Get<CerberusConfiguration>());
+builder.Services.AddSingleton<ISoulMenuConfiguration>(_ => builder.Configuration.GetSection("SoulMenuConfiguration").Get<SoulMenuConfiguration>());
 
 var app = builder.Build();
 
