@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hermescontrol-api-configmap
+data:
+  LocalStack__UseLocalStack: false
+  PostgreDbSettings__PostgresConnection: "Host=pgdb;Port=5432;Database=dbSoulMenu;Username=pass;Password=pass45455627"
+  AwsSqsConfiguration__Base: "http://localstack:4566"

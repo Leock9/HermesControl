@@ -1,33 +1,43 @@
 ﻿using HermesControl.Api.Domain.Gateways;
 using HermesControl.Api.Domain.UseCases.Requests;
+using HermesControl.Api.Infrastructure.CerberusGateway;
+using HermesControl.Api.Infrastructure.SoulMenuGateway;
 
 namespace HermesControl.Api.Domain.UseCases;
 
-public class OrderUseCase : IOrderUseCase
+public class OrderUseCase
+(
+    ILogger<OrderUseCase> logger,
+    IOrderGateway orderGateway,
+    IPaymentGateway paymentService,
+    IOrderQueue queue,
+    ICerberusGateway cerberusGateway,
+    ISoulMenuGateway soulMenuGateway
+) : IOrderUseCase
 {
-    private readonly ILogger<OrderUseCase> _logger;
-    private readonly IOrderGateway _orderGateway;
-    private readonly IPaymentGateway _paymentService;
-    private readonly IOrderQueue _queue;
-
-    public OrderUseCase
-    (
-        ILogger<OrderUseCase> logger,
-        IOrderGateway orderGateway,
-        IPaymentGateway paymentService,
-        IOrderQueue queue
-    )
-    {
-        _logger = logger;
-        _orderGateway = orderGateway;
-        _paymentService = paymentService;
-        _queue = queue;
-    }
+    private readonly ILogger<OrderUseCase> _logger = logger;
+    private readonly IOrderGateway _orderGateway = orderGateway;
+    private readonly IPaymentGateway _paymentService = paymentService;
+    private readonly IOrderQueue _queue = queue;
+    private readonly ICerberusGateway _cerberusGateway = cerberusGateway;
+    private readonly ISoulMenuGateway _soulMenuGateway = soulMenuGateway;
 
     public Guid CreateOrder(BaseOrderRequest orderRequest)
     {
         try
         {
+            var client = _cerberusGateway.GetByDocumentAsync(orderRequest.Document).Result ?? 
+                                                           throw new NullReferenceException("Client not found");
+
+            foreach (var itemId in orderRequest.ItemMenuIds)
+            {
+                var product = _soulMenuGateway.GetByIdAsync(new Guid(itemId)).Result ??
+                    throw new NullReferenceException("Product not found");
+
+                if (!product.IsActive)
+                    throw new Exception("Product not active");
+            }
+
             var payment = new Payment(orderRequest.TotalOrder);
             payment = _paymentService.PayAsync(payment);
 

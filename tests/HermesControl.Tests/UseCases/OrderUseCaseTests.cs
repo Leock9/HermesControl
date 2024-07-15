@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Bogus.Extensions.Brazil;
 using FluentAssertions;
+using HermesControl.Api.Infrastructure.CerberusGateway;
+using HermesControl.Api.Infrastructure.SoulMenuGateway;
 
 namespace HermesControl.Tests.UseCases;
 
@@ -16,6 +18,8 @@ public class OrderUseCaseTests
     private readonly IOrderGateway _orderRepository;
     private readonly IPaymentGateway _paymentService;
     private readonly IOrderQueue _queue;
+    private readonly ICerberusGateway _cerberusGateway;
+    private readonly ISoulMenuGateway _soulMenuGateway;
 
     private readonly OrderUseCase _orderService;
 
@@ -25,13 +29,17 @@ public class OrderUseCaseTests
         _orderRepository = new Mock<IOrderGateway>().Object;
         _paymentService = new Mock<IPaymentGateway>().Object;
         _queue = new Mock<IOrderQueue>().Object;
+        _cerberusGateway = new Mock<ICerberusGateway>().Object;
+        _soulMenuGateway = new Mock<ISoulMenuGateway>().Object;
 
         _orderService = new OrderUseCase
             (
               _logger,
               _orderRepository,
               _paymentService,
-              _queue
+              _queue,
+              _cerberusGateway,
+              _soulMenuGateway
             );
     }
 
@@ -52,6 +60,22 @@ public class OrderUseCaseTests
             IsAproved = true
         };
 
+        var getByDocument = new GetByDocumentResponse
+        (
+            Guid.NewGuid().ToString(),
+            faker.Person.FullName,
+            faker.Person.Cpf(),
+            faker.Person.Email
+        );
+
+        var getById = new GetByIdResponse
+        (
+            Guid.NewGuid(),
+            true
+        );
+
+        Mock.Get(_cerberusGateway).Setup(x => x.GetByDocumentAsync(It.IsAny<string>())).ReturnsAsync(getByDocument);
+        Mock.Get(_soulMenuGateway).Setup(x => x.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(getById);
         Mock.Get(_paymentService).Setup(x => x.PayAsync(It.IsAny<Payment>())).Returns(payment);
         Mock.Get(_orderRepository).Setup(x => x.Create(It.IsAny<Order>()));
 
@@ -79,12 +103,27 @@ public class OrderUseCaseTests
            faker.Make(10, () => Guid.NewGuid().ToString())
         );
 
-
         var payment = new Payment(request.TotalOrder)
         {
             IsAproved = false
         };
 
+        var getByDocument = new GetByDocumentResponse
+        (
+            Guid.NewGuid().ToString(),
+            faker.Person.FullName,
+            faker.Person.Cpf(),
+            faker.Person.Email
+        );
+
+        var getById = new GetByIdResponse
+        (
+            Guid.NewGuid(),
+            true
+        );
+
+        Mock.Get(_cerberusGateway).Setup(x => x.GetByDocumentAsync(It.IsAny<string>())).ReturnsAsync(getByDocument);
+        Mock.Get(_soulMenuGateway).Setup(x => x.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(getById);
         Mock.Get(_paymentService).Setup(x => x.PayAsync(It.IsAny<Payment>())).Returns(payment);
         Mock.Get(_orderRepository).Setup(x => x.Create(It.IsAny<Order>()));
 
