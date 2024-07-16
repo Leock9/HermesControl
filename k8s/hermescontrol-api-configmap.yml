@@ -4,5 +4,5 @@ metadata:
   name: hermescontrol-api-configmap
 data:
   LocalStack__UseLocalStack: false
-  PostgreDbSettings__PostgresConnection: "Host=pgdb;Port=5432;Database=dbSoulMenu;Username=pass;Password=pass45455627"
-  AwsSqsConfiguration__Base: "http://localstack:4566"
+  PostgreDbSettings__PostgresConnection: "Host=pgdb-hermes.cdd0lkghshno.us-east-1.rds.amazonaws.com;Port=5432;Database=pgdb-hermes;Username=pass;Password=pass45455627"
+  AwsSqsConfiguration__Base: "https://sqs.us-east-1.amazonaws.com/787463934853/"
