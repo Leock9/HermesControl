@@ -59,3 +59,15 @@ services:
     volumes:
       - "./localstack-volume:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+
+  zap:
+    image: zaproxy/zap-stable
+    command: >
+      zap-api-scan.py -t http://hermescontrol.api:8080/order -f openapi -r api-scan-report.html
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./reports:/zap/wrk
+    depends_on:
+      - hermescontrol.api
+      - localstack
