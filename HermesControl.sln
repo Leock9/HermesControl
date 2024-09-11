@@ -7,11 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FDB5627E-7BC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{27C8586D-2676-44E6-ADBE-06C4AA1A9DDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HermesControl.Api", "src\HermesControl.Api\HermesControl.Api.csproj", "{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HermesControl.Api", "src\HermesControl.Api\HermesControl.Api.csproj", "{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HermesControl.Tests", "tests\HermesControl.Tests\HermesControl.Tests.csproj", "{638E8686-A795-479A-8F20-2650371A30F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HermesControl.Tests", "tests\HermesControl.Tests\HermesControl.Tests.csproj", "{638E8686-A795-479A-8F20-2650371A30F3}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HermesControl.Orchestrator", "src\HermesControl.Orchestrator\HermesControl.Orchestrator.csproj", "{831634C9-08D2-4410-9D59-C63CB0D312E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HermesControl.Consumer", "src\HermesControl.Consumer\HermesControl.Consumer.csproj", "{D989256B-A0B8-4E61-91FE-77FE11C2433B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,14 @@ Global
 		{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C0BE95E-5874-4E28-93B1-1795C71A6CFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{831634C9-08D2-4410-9D59-C63CB0D312E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{831634C9-08D2-4410-9D59-C63CB0D312E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{831634C9-08D2-4410-9D59-C63CB0D312E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{831634C9-08D2-4410-9D59-C63CB0D312E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D989256B-A0B8-4E61-91FE-77FE11C2433B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D989256B-A0B8-4E61-91FE-77FE11C2433B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D989256B-A0B8-4E61-91FE-77FE11C2433B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D989256B-A0B8-4E61-91FE-77FE11C2433B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,6 +50,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AE2F8E8F-DDF1-450C-A7DE-4D4DD9AFAD10} = {FDB5627E-7BC0-4DDA-952D-886215E95C37}
 		{638E8686-A795-479A-8F20-2650371A30F3} = {27C8586D-2676-44E6-ADBE-06C4AA1A9DDD}
+		{831634C9-08D2-4410-9D59-C63CB0D312E8} = {FDB5627E-7BC0-4DDA-952D-886215E95C37}
+		{D989256B-A0B8-4E61-91FE-77FE11C2433B} = {FDB5627E-7BC0-4DDA-952D-886215E95C37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A7E5C5E-123C-4102-97EE-F0C56DF83CBB}

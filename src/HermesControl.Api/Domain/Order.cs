@@ -13,10 +13,12 @@ public record Order
 {
     public Guid Id { get; init; } = Guid.NewGuid();
 
+    public Guid EventId { get; init; } = Guid.NewGuid();
+
     public decimal TotalOrder { get; init; } = TotalOrder <= 0 ?
                                                throw new DomainException("Total order is required") : TotalOrder;
 
-    public Status Status { get; set; } = Payment.IsAproved ? Status.Received : Status.PaymentPending;
+    public Status Status { get; set; } = Status.NewOrder;
 
     public string Document { get; init; } = Document;
 
@@ -28,25 +30,4 @@ public record Order
     public DateTime UpdatedAt { get; init; } = DateTime.Now;
 
     public Payment Payment { get; init; } = Payment;
-
-    public Order ChangeStatus(Status newStatus)
-    {
-        if (!Payment.IsAproved) return this with { Status = Status.PaymentPending, UpdatedAt = DateTime.Now };
-
-        if (newStatus == Status.Canceled) return this with { Status = newStatus, UpdatedAt = DateTime.Now };
-
-        if (newStatus == Status.Received)
-            throw new DomainException("Status cannot be changed to received");
-
-        if (newStatus == Status.Preparation && Status != Status.Received)
-            throw new DomainException("Status cannot be changed to preparing");
-
-        if (newStatus == Status.Ready && Status != Status.Preparation)
-            throw new DomainException("Status cannot be changed to in delivery");
-
-        if (newStatus == Status.Finished && Status != Status.Ready)
-            throw new DomainException("Status cannot be changed to delivered");
-
-        return this with { Status = newStatus, UpdatedAt = DateTime.Now };
-    }
 }

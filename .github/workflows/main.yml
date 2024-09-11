@@ -36,9 +36,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-docker-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
       - name: Build the Docker image
         run: |
           docker build -f src/HermesControl.Api/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/hermescontrolapi:v1 .
+          docker build -f src/HermesControl.Consumer/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/hermescontrolconsumer:v1 .
+          docker build -f src/HermesControl.Orchestrator/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/hermescontrolorchestrator:v1 .
 
       - name: Login to Docker Hub
         if: github.ref == 'refs/heads/main'
@@ -49,7 +59,10 @@ jobs:
 
       - name: Push the image to Docker Hub
         if: github.ref == 'refs/heads/main'
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/hermescontrolapi:v1
+        run: | 
+          docker push ${{ secrets.DOCKER_USERNAME }}/hermescontrolapi:v1
+          docker push ${{ secrets.DOCKER_USERNAME }}/hermescontrolconsumer:v1
+          docker push ${{ secrets.DOCKER_USERNAME }}/hermescontrolorchestrator:v1
 
   deploy-to-eks:
     if: github.ref == 'refs/heads/main' && needs.build-and-push-docker-image.result == 'success'
@@ -70,6 +83,14 @@ jobs:
 
       - name: Update kubeconfig with EKS cluster credentials
         run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region us-east-1
+
+      - name: Cache Kubernetes manifests
+        uses: actions/cache@v3
+        with:
+          path: k8s/*.yaml
+          key: ${{ runner.os }}-k8s-manifests-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-k8s-manifests-
 
       - name: Change permissions
         run: chmod +x k8s/*.yaml

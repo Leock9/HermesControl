@@ -4,7 +4,13 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "hermescontrol.api": "StartDebugging"
+        "hermescontrol.api": "StartDebugging",
+        "hermescontrol.consumer": "DoNotStart",
+        "hermescontrol.orchestrator": "StartDebugging",
+        "pgadmin": "DoNotStart",
+        "pgdb": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging",
+        "zap": "DoNotStart"
       }
     }
   }
