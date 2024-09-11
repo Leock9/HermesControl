@@ -9,12 +9,27 @@ services:
       dockerfile: src/HermesControl.Api/Dockerfile
     ports:
       - "8080:8080"
-    environment:
-        LocalStack__Config__LocalStackHost: 'localstack'
     depends_on:
       - pgdb
       - pgadmin
-      - localstack
+      - rabbitmq
+
+  hermescontrol.consumer:
+    image: ${DOCKER_REGISTRY-}hermescontrolconsumer
+    build:
+      context: .
+      dockerfile: src/HermesControl.Consumer/Dockerfile
+    depends_on:
+      - pgdb
+      - rabbitmq 
+
+  hermescontrol.orchestrator:
+    image: ${DOCKER_REGISTRY-}hermescontrolorchestrator
+    build:
+      context: .
+      dockerfile: src/HermesControl.Orchestrator/Dockerfile
+    depends_on:
+      - rabbitmq 
 
   pgdb:
     image: postgres:latest
@@ -45,21 +60,6 @@ services:
     volumes:
     - "./servers.json:/pgadmin4/servers.json"
 
-  localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_hermesControl}"
-    image: localstack/localstack-pro 
-    ports:
-      - "127.0.0.1:4566:4566" # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559" # external services port range
-    environment:
-      - LOCALSTACK_AUTH_TOKEN="ls-RiFIdoqO-PUpu-FOTO-NaXi-4708XuPA470c"
-      - AWS_DEFAULT_REGION=us-east-1
-      - SERVICES=sqs
-      - EXTRA_CORS_ALLOWED_ORIGINS=https://app.localstack.cloud. # Enable access from the dashboard
-    volumes:
-      - "./localstack-volume:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
   zap:
     image: zaproxy/zap-stable
     command: >
@@ -70,4 +70,22 @@ services:
       - ./reports:/zap/wrk
     depends_on:
       - hermescontrol.api
-      - localstack
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"  # Porta para AMQP
+      - "15672:15672"  # Porta para o painel de controle do RabbitMQ (opcional, para acesso ao RabbitMQ Management)
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"  
+      RABBITMQ_DEFAULT_PASS: "guest"  
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

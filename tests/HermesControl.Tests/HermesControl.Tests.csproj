@@ -7,11 +7,13 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <UserSecretsId>e9c78868-00ce-4552-b461-b687bc014d29</UserSecretsId>
   </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Bogus" Version="35.3.0" />
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
 		<PackageReference Include="Moq" Version="4.20.70" />
 		<PackageReference Include="xunit" Version="2.4.2" />
