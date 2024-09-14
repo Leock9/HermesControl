@@ -6,6 +6,7 @@ using HermesControl.Api.Domain.UseCases;
 using HermesControl.Api.Infrastructure.OrderGateway.PostgreDb;
 using HermesControl.Api.Infrastructure.RabbitMq;
 
+Console.WriteLine("Versão: Even Flow");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddSimpleConsole(options =>

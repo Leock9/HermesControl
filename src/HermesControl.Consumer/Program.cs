@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 Console.WriteLine("Aguardando 2 minutos para iniciar a execução dos workers...");
+Console.WriteLine("Versão: Even Flow");
 await Task.Delay(120000);
 
 var builder = Host.CreateDefaultBuilder(args)
