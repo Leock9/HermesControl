@@ -7,6 +7,7 @@ using HermesControl.Orchestrator.Domain.ValueObjects;
 using Microsoft.Extensions.Configuration;
 
 Console.WriteLine("Aguardando 2 minutos para iniciar a execução da Saga...");
+Console.WriteLine("Versão: Even Flow");
 await Task.Delay(120000);
 
 var builder = Host.CreateDefaultBuilder()
